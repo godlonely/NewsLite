@@ -29,6 +29,7 @@ import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.klz.news.adapter.MyAdapter;
 import com.klz.news.model.Joke;
+import com.klz.news.network.NetUtil;
 import com.klz.news.update.UpdateUtil;
 import com.klz.news.update.appInfo;
 
@@ -81,13 +82,9 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
                     break;
                 case 9999:
                     //升级操作
-                    String versionName = UpdateUtil.getVersionName(MainActivity.this);
                     int versionCode = UpdateUtil.getVersionCode(MainActivity.this);
-                    version.setText(versionName);
                     appInfo ifn = (appInfo) msg.obj;
-                    if (versionCode<=ifn.getContent().getVersionCode()) {
-
-                    } else {
+                    if (versionCode < ifn.getContent().getVersionCode()) {
                         showUpdataDialog(ifn);
                     }
                     break;
@@ -219,14 +216,15 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
         myAdapter.setOnItemClickListener(this);
         myAdapter.setOnItemLongClickListener(null);
         mRecyclerview.setRefreshing(true);
-
-
     }
 
     private void initView() {
         mRecyclerview = (XRecyclerView) findViewById(R.id.recyclerview);
         mEmptyView = (TextView) findViewById(R.id.text_empty);
         version = (TextView) findViewById(R.id.txt_version);
+        //显示版本号
+        String versionName = UpdateUtil.getVersionName(MainActivity.this);
+        version.setText(versionName);
     }
 
     /**
@@ -310,7 +308,32 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
     /*
      * 从服务器中下载APK
      */
-    protected void downLoadApk(final appInfo info) {
+    protected void downLoadWarning(final appInfo info) {
+        int netWorkType = NetUtil.getNetWorkType(this);
+        if (netWorkType==NetUtil.NETWORKTYPE_WIFI) {
+            downLoadApk(info);
+        }else{
+            AlertDialog.Builder b = new AlertDialog.Builder(this);
+            b.setCancelable(false);
+            b.setTitle("提示");
+            b.setMessage("您当前不是WiFi网络，是否下载更新？");
+            b.setPositiveButton("下载", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                   downLoadApk(info);
+                }
+            });
+            b.setNegativeButton("我再考虑一下", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            b.create().show();
+        }
+
+    }
+    protected void downLoadApk(final appInfo info){
         final ProgressDialog pd;    //进度条对话框
         pd = new ProgressDialog(this);
         pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -364,7 +387,7 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
         //当点确定按钮时从服务器上下载 新的apk 然后安装
         builer.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                downLoadApk(info);
+                downLoadWarning(info);
             }
         });
         //当点取消按钮时进行登录
