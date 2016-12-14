@@ -2,7 +2,6 @@ package com.klz.news;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,8 +16,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,13 +31,15 @@ import com.klz.news.update.UpdateUtil;
 import com.klz.news.update.appInfo;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 
-import static com.klz.news.SettingFile.baiduApiUrl;
+import static com.klz.news.SettingFile.showApiUrl;
 
 public class MainActivity extends Activity implements MyAdapter.MyItemClickListener, MyAdapter.MyItemLongClickListener {
-    static String httpUrl = baiduApiUrl;
     static String httpArg = "page=";
+    static String maxNum = "10";
     int num = 1;
     private XRecyclerView mRecyclerview;
     private TextView version;
@@ -101,7 +100,7 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
         setContentView(R.layout.activity_main);
         initView();
         start();
-        Toast.makeText(this, getUserAgentString(MainActivity.this), Toast.LENGTH_SHORT).show();
+        //        Toast.makeText(this, getUserAgentString(MainActivity.this), Toast.LENGTH_SHORT).show();
     }
 
     private void start() {
@@ -141,7 +140,8 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        String jsonResult = HttpUtils.request(httpUrl, httpArg + 1);
+                        String jsonResult = HttpUtils.requestShowApp(showApiUrl, maxNum, "" + num);
+                        Log.d("MainActivity", jsonResult);
                         if (!TextUtils.isEmpty(jsonResult)) {
                             num++;
                             try {
@@ -153,6 +153,8 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
                                 Log.e("Data", "数据0：" + newListData.get(0).getTitle());
 
                             } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (NullPointerException e) {
                                 e.printStackTrace();
                             }
                             //myAdapter.notifyDataSetChanged();
@@ -177,7 +179,7 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        String jsonResult = HttpUtils.request(httpUrl, httpArg + num);
+                        String jsonResult = HttpUtils.requestShowApp(showApiUrl, maxNum, "" + num);
                         if (!TextUtils.isEmpty(jsonResult)) {
                             num++;
                             try {
@@ -215,7 +217,7 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
         mRecyclerview.setAdapter(myAdapter);
         myAdapter.setOnItemClickListener(this);
         myAdapter.setOnItemLongClickListener(null);
-        mRecyclerview.setRefreshing(true);
+        mRecyclerview.refresh();
     }
 
     private void initView() {
@@ -225,22 +227,6 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
         //显示版本号
         String versionName = UpdateUtil.getVersionName(MainActivity.this);
         version.setText(versionName);
-    }
-
-    /**
-     * Android获得UA信息
-     *
-     * @param ctx
-     * @return
-     */
-    public static String getUserAgentString(Context ctx) {
-        WebView webview;
-        webview = new WebView(ctx);
-        webview.layout(0, 0, 0, 0);
-        WebSettings settings = webview.getSettings();
-        String ua = settings.getUserAgentString();
-        Log.i("UA", ua);
-        return ua;
     }
 
     @Override
@@ -281,20 +267,27 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String jsonResult = HttpUtils.requestUpdate();
+                String rs = HttpUtils.requestUpdate();
+                Log.d("MainActivity", rs);
+                String jsonResult = null;
+                try {
+                    jsonResult = URLDecoder.decode(rs, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                Log.d("MainActivity", jsonResult);
                 if (!TextUtils.isEmpty(jsonResult)) {
                     appInfo app = null;
                     try {
                         JSONObject jsonObject = JSONObject.parseObject(jsonResult);
                         app = JSONObject.parseObject(jsonObject.toString(), appInfo.class);
-
+                        Message m = Message.obtain();
+                        m.obj = app;
+                        m.what = 9999;
+                        handler.sendMessage(m);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    Message m = Message.obtain();
-                    m.obj = app;
-                    m.what = 9999;
-                    handler.sendMessage(m);
                 } else {
                     Message m = Message.obtain();
                     m.obj = jsonResult;
@@ -310,9 +303,9 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
      */
     protected void downLoadWarning(final appInfo info) {
         int netWorkType = NetUtil.getNetWorkType(this);
-        if (netWorkType==NetUtil.NETWORKTYPE_WIFI) {
+        if (netWorkType == NetUtil.NETWORKTYPE_WIFI) {
             downLoadApk(info);
-        }else{
+        } else {
             AlertDialog.Builder b = new AlertDialog.Builder(this);
             b.setCancelable(false);
             b.setTitle("提示");
@@ -320,7 +313,7 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
             b.setPositiveButton("下载", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                   downLoadApk(info);
+                    downLoadApk(info);
                 }
             });
             b.setNegativeButton("我再考虑一下", new DialogInterface.OnClickListener() {
@@ -333,7 +326,8 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
         }
 
     }
-    protected void downLoadApk(final appInfo info){
+
+    protected void downLoadApk(final appInfo info) {
         final ProgressDialog pd;    //进度条对话框
         pd = new ProgressDialog(this);
         pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
