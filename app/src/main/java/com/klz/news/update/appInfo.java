@@ -46,9 +46,8 @@ public class appInfo {
          * time : 1481274588
          * url : http://helpgod.oss-cn-qingdao.aliyuncs.com/appUpdate/news2016-12-09.apk
          * tips : 1、优化部分界面
-         2、修复一些Bug
+         * 2、修复一些Bug
          */
-
         private int versionCode;
         private String time;
         private String url;
@@ -83,7 +82,7 @@ public class appInfo {
         }
 
         public void setTips(String tips) {
-            this.tips = tips.replaceAll("\\n","\n");
+            this.tips = tips.replaceAll("\\n", "\n");
         }
     }
 }
