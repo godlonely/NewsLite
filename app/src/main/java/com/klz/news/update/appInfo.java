@@ -50,7 +50,7 @@ public class appInfo {
          */
 
         private int versionCode;
-        private int time;
+        private String time;
         private String url;
         private String tips;
 
@@ -62,11 +62,11 @@ public class appInfo {
             this.versionCode = versionCode;
         }
 
-        public int getTime() {
+        public String getTime() {
             return time;
         }
 
-        public void setTime(int time) {
+        public void setTime(String time) {
             this.time = time;
         }
 
@@ -83,7 +83,7 @@ public class appInfo {
         }
 
         public void setTips(String tips) {
-            this.tips = tips;
+            this.tips = tips.replaceAll("\\n","\n");
         }
     }
 }
