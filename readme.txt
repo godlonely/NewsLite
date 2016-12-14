@@ -1,2 +1,2 @@
 项目说明：
-    news包下添加SettingFile.java文件。
+    配置文件在SettingFile.java里面，测试的时候可以改成ShowApi自己的配置信息。
