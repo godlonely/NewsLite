@@ -26,7 +26,7 @@ import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.klz.news.adapter.MyAdapter;
 import com.klz.news.model.Joke;
-import com.klz.news.network.NetUtil;
+import com.klz.news.network.NetworkUtil;
 import com.klz.news.update.UpdateUtil;
 import com.klz.news.update.appInfo;
 
@@ -302,8 +302,8 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
      * 从服务器中下载APK
      */
     protected void downLoadWarning(final appInfo info) {
-        int netWorkType = NetUtil.getNetWorkType(this);
-        if (netWorkType == NetUtil.NETWORKTYPE_WIFI) {
+        int netWorkType = NetworkUtil.getNetWorkType(this);
+        if (netWorkType == NetworkUtil.NETWORKTYPE_WIFI) {
             downLoadApk(info);
         } else {
             AlertDialog.Builder b = new AlertDialog.Builder(this);

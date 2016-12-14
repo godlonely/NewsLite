@@ -82,7 +82,7 @@ public class appInfo {
         }
 
         public void setTips(String tips) {
-            this.tips = tips.replaceAll("\\n", "\n");
+            this.tips = tips;
         }
     }
 }
