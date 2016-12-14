@@ -1,8 +1,5 @@
 package com.klz.news.model;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.klz.news.clearContentUtil;
-
 /**
  * Created on 2016/9/28.
  */
@@ -10,34 +7,25 @@ import com.klz.news.clearContentUtil;
 public class Joke {
 
     /**
-     * ct : 2015-08-13 13:10:26.149
-     * text : 新人发帖求过…… 媳妇最近怀孕了…天天这也不想吃那也不想吃…有一天发脾气要我给他做想吃的，结果做了好多还是没有想吃的…最后着急了大喊:再做不出我想吃的我就去大街上要饭……我想说:你吃什么自己都不知道我怎么做啊…唉…想想男人女人都不容易啊…
-     * title : 媳妇儿有了…
+     * id : 5850aee56e368ed797bc1f0c
+     * title : 有个记性不好的老婆真
+     * text : 有个记性不好的老婆真是让人头疼：早上把口红蹭我衣服上，然后刚吃完午饭就揍我了。
      * type : 1
+     * ct : 2016-12-14 10:31:01.384
      */
-    @JSONField(name = "ct")
-    private String ct;
-    @JSONField(name = "text")
-    private String text;
-    @JSONField(name = "title")
+
+    private String id;
     private String title;
-    @JSONField(name = "type")
+    private String text;
     private int type;
+    private String ct;
 
-    public String getCt() {
-        return ct;
+    public String getId() {
+        return id;
     }
 
-    public void setCt(String ct) {
-        this.ct = ct;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = clearContentUtil.htmlClearType(text);
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -48,11 +36,27 @@ public class Joke {
         this.title = title;
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
     public int getType() {
         return type;
     }
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getCt() {
+        return ct;
+    }
+
+    public void setCt(String ct) {
+        this.ct = ct;
     }
 }
