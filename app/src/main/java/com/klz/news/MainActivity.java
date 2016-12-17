@@ -325,6 +325,10 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
 
     }
 
+    /**
+     * 下载最新版的App文件
+     * @param info 最新版本信息
+     */
     protected void downLoadApk(final appInfo info) {
         final ProgressDialog pd;    //进度条对话框
         pd = new ProgressDialog(this);
