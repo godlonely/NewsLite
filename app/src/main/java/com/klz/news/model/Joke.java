@@ -41,7 +41,7 @@ public class Joke {
     }
 
     public void setText(String text) {
-        this.text = text;
+        this.text = text.replaceAll("<p>","").replaceAll("</p>","");
     }
 
     public int getType() {
