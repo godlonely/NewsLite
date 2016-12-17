@@ -81,6 +81,7 @@ public class HttpUtils {
                 }
                 reader.close();
                 result = sbf.toString();
+                Log.d("HttpUtils", result);
             }
         } catch (Exception e) {
             e.printStackTrace();

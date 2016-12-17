@@ -11,6 +11,7 @@ import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -21,7 +22,6 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.jcodecraeer.xrecyclerview.ArrowRefreshHeader;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.klz.news.adapter.MyAdapter;
@@ -31,8 +31,6 @@ import com.klz.news.update.UpdateUtil;
 import com.klz.news.update.appInfo;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 
 import static com.klz.news.SettingFile.showApiUrl;
@@ -87,6 +85,9 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
                         showUpdataDialog(ifn);
                     }
                     break;
+                case 8888:
+                    Toast.makeText(MainActivity.this, "请重新访问http://bxu2359130637.my3w.com/app/update.php", Toast.LENGTH_SHORT).show();
+                    break;
             }
         }
     };
@@ -100,7 +101,7 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
         setContentView(R.layout.activity_main);
         initView();
         start();
-        //        Toast.makeText(this, getUserAgentString(MainActivity.this), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, getUserAgentString(MainActivity.this), Toast.LENGTH_SHORT).show();
     }
 
     private void start() {
@@ -109,11 +110,10 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerview.setLayoutManager(layoutManager);
 
-        //mRecyclerview.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        ArrowRefreshHeader refreshHeader = new ArrowRefreshHeader(this);
+//        ArrowRefreshHeader refreshHeader = new ArrowRefreshHeader(this);
         //refreshHeader.setState(refreshHeader.STATE_RELEASE_TO_REFRESH);
         //refreshHeader.setProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        //mRecyclerview.setRefreshHeader(refreshHeader);
+//        mRecyclerview.setRefreshHeader(refreshHeader);
         mRecyclerview.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         mRecyclerview.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
         mRecyclerview.setArrowImageView(R.drawable.iconfont_downgrey);
@@ -141,8 +141,8 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
                     @Override
                     public void run() {
                         String jsonResult = HttpUtils.requestShowApp(showApiUrl, maxNum, "" + num);
-                        Log.d("MainActivity", jsonResult);
                         if (!TextUtils.isEmpty(jsonResult)) {
+                            Log.d("MainActivity", jsonResult);
                             num++;
                             try {
                                 JSONObject jsonObject = JSONObject.parseObject(jsonResult);
@@ -226,7 +226,9 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
         version = (TextView) findViewById(R.id.txt_version);
         //显示版本号
         String versionName = UpdateUtil.getVersionName(MainActivity.this);
-        version.setText(versionName);
+        String label = DateUtils.formatDateTime(this, System.currentTimeMillis(), DateUtils.FORMAT_SHOW_TIME
+                        | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
+        version.setText(versionName+"\n"+label);
     }
 
     @Override
@@ -268,29 +270,25 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
             @Override
             public void run() {
                 String rs = HttpUtils.requestUpdate();
-                Log.d("MainActivity", rs);
-                String jsonResult = null;
-                try {
-                    jsonResult = URLDecoder.decode(rs, "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                Log.d("MainActivity", jsonResult);
-                if (!TextUtils.isEmpty(jsonResult)) {
+                if (!TextUtils.isEmpty(rs)) {
+                    Log.d("MainActivity", "" + rs);
                     appInfo app = null;
                     try {
-                        JSONObject jsonObject = JSONObject.parseObject(jsonResult);
+                        JSONObject jsonObject = JSONObject.parseObject(rs);
                         app = JSONObject.parseObject(jsonObject.toString(), appInfo.class);
                         Message m = Message.obtain();
                         m.obj = app;
                         m.what = 9999;
                         handler.sendMessage(m);
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
+                        Message m = Message.obtain();
+                        m.what = 8888;
+                        handler.sendMessage(m);
                         e.printStackTrace();
                     }
                 } else {
                     Message m = Message.obtain();
-                    m.obj = jsonResult;
+                    m.obj = rs;
                     m.what = -1;
                     handler.sendMessage(m);
                 }
