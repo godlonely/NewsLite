@@ -86,7 +86,7 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
                     }
                     break;
                 case 8888:
-                    Toast.makeText(MainActivity.this, "请重新访问http://bxu2359130637.my3w.com/app/update.php", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "访问失败！请稍候重新尝试。", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
