@@ -29,6 +29,7 @@ import com.klz.news.model.Joke;
 import com.klz.news.network.NetworkUtil;
 import com.klz.news.update.UpdateUtil;
 import com.klz.news.update.appInfo;
+import com.klz.news.util.ChannelUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -228,7 +229,8 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
         String versionName = UpdateUtil.getVersionName(MainActivity.this);
         String label = DateUtils.formatDateTime(this, System.currentTimeMillis(), DateUtils.FORMAT_SHOW_TIME
                         | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
-        version.setText(versionName+"\n"+label);
+        String channel = ChannelUtil.getChannel(this);
+        version.setText(versionName+"\n"+label+"\n"+channel);
     }
 
     @Override
