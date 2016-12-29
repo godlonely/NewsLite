@@ -6,6 +6,6 @@
 &ensp;
 ##### 截图
  <div style="padding:0px;margin:auto;width:445px">
-  <img src="img/Screenshot_20161229-142632.png" style="padding:0px;margin:10px;width:200px;border:0px;"/>
-  <img src="img/Screenshot_20161229-142627.png" style="padding:0px;margin:10px;width:200px;border:0px;"/>
+  <img src="img/Screenshot_20161229-142632.png" width="200"/>
+  <img src="img/Screenshot_20161229-142627.png" width="200"/>
  </div>
