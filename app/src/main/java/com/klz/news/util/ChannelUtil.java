@@ -18,11 +18,11 @@ public class ChannelUtil {
      * @return 渠道号
      */
     public static String getChannel(Context context) {
-        String channel = "Hy_self";
+        String channel = "K_self";
         try {
             ApplicationInfo info = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
             if (info != null && info.metaData != null) {
-                String metaData = info.metaData.getString("HY_CHANNEL");
+                String metaData = info.metaData.getString("K_CHANNEL");
                 if (!StringUtils.isBlank(metaData)) {
                     channel = metaData;
                 }
