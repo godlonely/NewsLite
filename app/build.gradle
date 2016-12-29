@@ -92,3 +92,6 @@ dependencies {
 }
 // 指导文章
 // http://www.cnblogs.com/permanent2012moira/p/5126276.html
+
+// 打包
+// Terminal里面直接输入：gradle assembleRelease
