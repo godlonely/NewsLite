@@ -5,7 +5,7 @@
 &ensp;  
 &ensp;
 ##### 截图
- <div style="padding:0px;margin:auto;width:445px">
+ <div align="center">
   <img src="img/Screenshot_20161229-142632.png" width="200"/>
   <img src="img/Screenshot_20161229-142627.png" width="200"/>
  </div>
