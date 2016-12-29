@@ -21,8 +21,8 @@
             </intent-filter>
         </activity>
         <meta-data
-            android:name="HY_CHANNEL"
-            android:value="${HY_CHANNEL_VALUE}"/>
+            android:name="K_CHANNEL"
+            android:value="${K_CHANNEL_VALUE}"/>
     </application>
 
 </manifest>
