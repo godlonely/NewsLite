@@ -1,4 +1,4 @@
-package com.klz.news;
+package com.klz.news.network;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,28 +11,27 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static com.klz.news.SettingFile.appUpdateUrl;
-import static com.klz.news.SettingFile.showapi_appid;
-import static com.klz.news.SettingFile.showapi_sign;
+import static com.klz.news.util.SettingFile.appUpdateUrl;
+import static com.klz.news.util.SettingFile.showapi_appid;
+import static com.klz.news.util.SettingFile.showapi_sign;
 
 /**
  * Created by Kong on 2016/6/16 0016.
  */
 public class HttpUtils {
-
     /**
      * 请求笑话的接口
      *
-     * @param httpUrl 接口地址
+     * @param httpUrl   接口地址
      * @param maxResult 每次返回的数据条数
-     * @param page 请求页数
+     * @param page      请求页数
      * @return String 返回数据
      */
-    public static String requestShowApp(String httpUrl,String maxResult, String page) {
+    public static String requestShowApp(String httpUrl, String maxResult, String page) {
         BufferedReader reader = null;
         String result = null;
         StringBuffer sbf = new StringBuffer();
-        httpUrl = httpUrl + "?" + "showapi_appid="+showapi_appid+"&showapi_sign="+showapi_sign+"&maxResult="+maxResult+"&page="+page;
+        httpUrl = httpUrl + "?" + "showapi_appid=" + showapi_appid + "&showapi_sign=" + showapi_sign + "&maxResult=" + maxResult + "&page=" + page;
 
         try {
             URL url = new URL(httpUrl);

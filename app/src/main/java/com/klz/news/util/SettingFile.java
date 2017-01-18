@@ -1,4 +1,4 @@
-package com.klz.news;
+package com.klz.news.util;
 
 /**
  * Created on 2016/12/9.

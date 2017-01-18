@@ -1,5 +1,7 @@
 package com.klz.news.model;
 
+import com.klz.news.util.clearContentUtil;
+
 /**
  * Created on 2016/9/28.
  */
@@ -41,7 +43,7 @@ public class Joke {
     }
 
     public void setText(String text) {
-        this.text = text.replaceAll("<p>","").replaceAll("</p>","");
+        this.text = clearContentUtil.htmlClearType(text);
     }
 
     public int getType() {

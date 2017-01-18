@@ -51,12 +51,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        //                Picasso.with(context).load(datas.get(position).getImage_url()).placeholder(R.mipmap.ic_launcher).
-        //                transform(new CircleTransform()).into(holder.image);
+        //Picasso.with(context).load(datas.get(position).getImage_url()).placeholder(R.mipmap.ic_launcher).
+        //transform(new CircleTransform()).into(holder.image);
         holder.title.setText(datas.get(position).getTitle());
         holder.con.setText(datas.get(position).getText());
         Log.d("position", "" + position);
-        //        holder.url.setText(datas.get(position).getUrl());
     }
 
     @Override

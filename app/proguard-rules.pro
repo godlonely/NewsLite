@@ -14,27 +14,49 @@
 # class:
 #-------------------------------------------定制化区域----------------------------------------------
 #---------------------------------1.实体类---------------------------------
--keep class com.klz.news.model.**{*;}
+#-keep class com.klz.news.model.**{*;}
 
--keep class com.jcodecraeer.xrecyclerview.**{*;}
--keep class org.apache.commons.lang.**{*;}
+#-keep class com.jcodecraeer.xrecyclerview.**{*;}
+#-keep class org.apache.commons.lang.**{*;}
 
 -keep class android.support.v4.** { *; }
 -keep class android.support.v7.** { *; }
 -keep public class * extends android.support.v4.**
 -keep public class * extends android.support.v7.**
 
--keep class org.apache.http.entity.mime.** {*;}
--keep class android.net.http.** {*;}
+#-keep class org.apache.http.entity.mime.** {*;}
+#-keep class android.net.http.** {*;}
 #-------------------------------------------------------------------------
 
 #---------------------------------2.第三方包-------------------------------
+################### region for json
 -dontwarn com.alibaba.fastjson.**
 -dontskipnonpubliclibraryclassmembers
 -dontskipnonpubliclibraryclasses
 
 -keep class com.alibaba.fastjson.**{*;}
 -keep class * implements java.io.Serializable { *; }
+################### end region
+
+
+################### region for xUtils
+-keepattributes Signature,*Annotation*
+-keep public class org.xutils.** {
+    public protected *;
+}
+-keep public interface org.xutils.** {
+    public protected *;
+}
+-keepclassmembers class * extends org.xutils.** {
+    public protected *;
+}
+-keepclassmembers @org.xutils.db.annotation.* class * {*;}
+-keepclassmembers @org.xutils.http.annotation.* class * {*;}
+-keepclassmembers class * {
+    @org.xutils.view.annotation.Event <methods>;
+}
+#################### end region
+
 #-------------------------------------------------------------------------
 
 #---------------------------------3.与js互相调用的类------------------------
@@ -130,3 +152,11 @@
 }
 #----------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------------
+#------------------------------清除log日志---------------------------------------------------------------------
+-assumenosideeffects class android.util.Log{
+    public static *** v(...);
+    public static *** i(...);
+    public static *** d(...);
+    public static *** w(...);
+    public static *** e(...);
+}
