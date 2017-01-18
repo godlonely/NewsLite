@@ -12,8 +12,8 @@ android {
         applicationId "com.klz.news"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 8
-        versionName "1.1.0.${releaseTime()}"
+        versionCode 9
+        versionName "1.0.6.${releaseTime()}"
         manifestPlaceholders = [K_CHANNEL_VALUE: "klz"]
     }
     //执行lint检查，有任何的错误或者警告提示，都会终止构建，我们可以将其关掉。
