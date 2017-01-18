@@ -28,4 +28,5 @@
 - fastjson
 - xrecyclerview
 - commons-lang
-- xutils 3.0
+- xutils
+- glide
