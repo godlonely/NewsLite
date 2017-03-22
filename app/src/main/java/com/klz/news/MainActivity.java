@@ -38,7 +38,7 @@ import static com.klz.news.util.SettingFile.showApiUrl;
 
 @ContentView(R.layout.activity_main)
 public class MainActivity extends Activity implements MyAdapter.MyItemClickListener, MyAdapter.MyItemLongClickListener {
-    static String maxNum = "10";
+    static String maxNum = "15";
     int num = 1;
     @ViewInject(R.id.recyclerview)
     private XRecyclerView mRecyclerview;

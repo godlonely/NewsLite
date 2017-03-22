@@ -5,15 +5,15 @@ def releaseTime() {
 }
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 23
     buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.klz.news"
         minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 9
-        versionName "1.0.6.${releaseTime()}"
+        targetSdkVersion 23
+        versionCode 10
+        versionName "1.0.8.${releaseTime()}"
         manifestPlaceholders = [K_CHANNEL_VALUE: "klz"]
     }
     //执行lint检查，有任何的错误或者警告提示，都会终止构建，我们可以将其关掉。
@@ -25,12 +25,14 @@ android {
         debug {
         }
         release {
-            storeFile file("E:/WhereU/WhereU.jks")
-            if (System.console() != null)
-                storePassword System.console().readLine("\nKeystore password: ")
-            keyAlias "news"
-            if (System.console() != null)
-                keyPassword System.console().readLine("\nKey password: ")
+//            storeFile file("E:/WhereU/WhereU.jks")
+//            if (System.console() != null){
+//                storePassword System.console().readLine("\nKeystore password: ")
+//            }
+//            keyAlias "news"
+//            if (System.console() != null){
+//                keyPassword System.console().readLine("\nKey password: ")
+//            }
         }
     }
 
@@ -84,8 +86,8 @@ android {
 
 dependencies {
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:support-v4:25.1.0'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:support-v13:23.4.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.jcodecraeer:xrecyclerview:1.3.2'
     compile 'org.lucee:commons-lang:2.6.0'
@@ -94,7 +96,8 @@ dependencies {
 }
 
 // 指导文章
-// http://www.cnblogs.com/permanent2012moira/p/5126276.html
+// 混淆 http://www.cnblogs.com/permanent2012moira/p/5126276.html
+// 打包 http://blog.csdn.net/shineflowers/article/details/45042485
 
-// 打包
+// 打包--需要配置gradle的环境变量（path=>C:\Users\VULCAN\.gradle\gradle-3.3\bin）,选对应的版本（C:\Users\VULCAN\.gradle\wrapper\dists）复制到前面的.gradle里面，然后重启studio
 // Terminal里面直接输入：gradle assembleRelease
