@@ -25,14 +25,14 @@ android {
         debug {
         }
         release {
-//            storeFile file("E:/WhereU/WhereU.jks")
-//            if (System.console() != null){
-//                storePassword System.console().readLine("\nKeystore password: ")
-//            }
-//            keyAlias "news"
-//            if (System.console() != null){
-//                keyPassword System.console().readLine("\nKey password: ")
-//            }
+            storeFile file("E:/WhereU/WhereU.jks")
+            if (System.console() != null){
+                storePassword System.console().readLine("\nKeystore password: ")
+            }
+            keyAlias "news"
+            if (System.console() != null){
+                keyPassword System.console().readLine("\nKey password: ")
+            }
         }
     }
 
