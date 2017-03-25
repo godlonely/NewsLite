@@ -4,7 +4,6 @@
 &emsp;  
 &ensp;  
 &ensp;
-<hr/>
 ## 历史版本
 - ##### v1.1.0  Loading
   - 正在创建...
@@ -22,7 +21,6 @@
 <img src="img/Screenshot_20161229-142627.png" width="300"/>
 </div>
 
-<hr/>
 ## 使用到的第三方框架
 - fastjson
 - xrecyclerview
