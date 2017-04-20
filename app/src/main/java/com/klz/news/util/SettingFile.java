@@ -10,5 +10,5 @@ public class SettingFile {
     public static String showapi_appid = "28889";
     public static String showapi_sign = "7074f3d43e374702a30cd5d6349e7794";
     //App升级路径
-    public static String appUpdateUrl = "http://www.whereisworld.com/app/update.php";
+    public static String appUpdateUrl = "https://www.whereisworld.com/app/update.php";
 }
