@@ -61,23 +61,23 @@ android {
             //签名
             signingConfig signingConfigs.release
             applicationVariants.all { variant ->
-                variant.outputs.each { output ->
-                    def outputFile = output.outputFile
-                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                        // 输出apk名称为app_v1.0_2015-xx-xx_xxxx.apk
-                        //def fileName = "app_v${defaultConfig.versionName}_${releaseTime()}.apk"
-                        def fileName = "app_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
-                        output.outputFile = new File(outputFile.parent, fileName)
-                    }
+                variant.outputs.all{
+                    outputFileName = "app_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
                 }
             }
         }
     }
-
+    flavorDimensions "brand"
     productFlavors {
-        klz {}
-        sumsang {}
-        xiaomi {}
+        klz {
+            dimension "brand"
+        }
+        sumsang {
+            dimension "brand"
+        }
+        xiaomi {
+            dimension "brand"
+        }
     }
     productFlavors.all { flavor ->
         flavor.manifestPlaceholders = [K_CHANNEL_VALUE: name]
