@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">News</string>
+    <string name="version">version:</string>
+    <string name="empty">empty</string>
+    <string name="emptyview">emptyView</string>
+    <string name="header">this is header</string>
 </resources>

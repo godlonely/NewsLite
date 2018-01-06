@@ -10,10 +10,10 @@ android {
 
     defaultConfig {
         applicationId "com.klz.news"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 23
-        versionCode 11
-        versionName "1.0.9.${releaseTime()}"
+        versionCode 12
+        versionName "1.1.0.${releaseTime()}"
         manifestPlaceholders = [K_CHANNEL_VALUE: "klz"]
     }
     //执行lint检查，有任何的错误或者警告提示，都会终止构建，我们可以将其关掉。
@@ -33,17 +33,17 @@ android {
             if (System.console() != null){
                 keyPassword System.console().readLine("\nKey password: ")
             }
-        }
     }
+}
 
-    buildTypes {
-        debug {
-            // 显示Log
-            buildConfigField "boolean", "LOG_DEBUG", "true"
-            versionNameSuffix "-debug"
-            minifyEnabled false
-            zipAlignEnabled false
-            shrinkResources false
+buildTypes {
+    debug {
+        // 显示Log
+        buildConfigField "boolean", "LOG_DEBUG", "true"
+        versionNameSuffix "-debug"
+        minifyEnabled false
+        zipAlignEnabled false
+        shrinkResources false
             signingConfig signingConfigs.debug
         }
         release {

@@ -87,14 +87,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, getAdapterPosition());
             }
         }
 
         @Override
         public boolean onLongClick(View v) {
             if (mLongClickListener != null) {
-                mLongClickListener.onItemLongClick(v, getPosition());
+                mLongClickListener.onItemLongClick(v, getAdapterPosition());
             }
             return true;
         }
