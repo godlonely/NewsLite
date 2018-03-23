@@ -9,17 +9,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.klz.news.model.Joke;
 import com.klz.news.R;
+import com.klz.news.model.TextJoke;
 
 import java.util.ArrayList;
 
 /**
  * Created by Kong on 2016/6/16 0016.
  */
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+public class TextAdapter extends RecyclerView.Adapter<TextAdapter.ViewHolder> {
 
-    public ArrayList<Joke> datas = null;
+    public ArrayList<TextJoke> datas = null;
     public Context context;
 
     private MyItemClickListener mItemClickListener;
@@ -33,19 +33,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         this.mItemLongClickListener = listener;
     }
 
-    public MyAdapter(Context context, ArrayList<Joke> datas) {
+    public TextAdapter(Context context, ArrayList<TextJoke> datas) {
         this.context = context;
         this.datas = datas;
     }
 
-    public void setDatas(ArrayList<Joke> c) {
+    public void setDatas(ArrayList<TextJoke> c) {
         datas.addAll(c);
         notifyDataSetChanged();
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.list_item_new, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.list_text_item, parent, false);
         return new ViewHolder(view, mItemClickListener, mItemLongClickListener);
     }
 
@@ -74,10 +74,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         public ViewHolder(View itemView, MyItemClickListener listener, MyItemLongClickListener longClickListener) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.list_item_new_title);
-            con = (TextView) itemView.findViewById(R.id.list_item_new_abstract);
-            image = (ImageView) itemView.findViewById(R.id.list_item_new_image);
-            url = (TextView) itemView.findViewById(R.id.list_item_new_url);
+            title = (TextView) itemView.findViewById(R.id.list_text_item_title);
+            con = (TextView) itemView.findViewById(R.id.list_text_item_abstract);
+            image = (ImageView) itemView.findViewById(R.id.list_text_item_image);
+            url = (TextView) itemView.findViewById(R.id.list_text_item_url);
             this.mListener = listener;
             this.mLongClickListener = longClickListener;
             itemView.setOnClickListener(this);

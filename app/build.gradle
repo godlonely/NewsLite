@@ -14,7 +14,13 @@ android {
         targetSdkVersion 23
         versionCode 12
         versionName "1.1.0.${releaseTime()}"
-        manifestPlaceholders = [K_CHANNEL_VALUE: "klz"]
+        ndk {
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+        }
+        manifestPlaceholders = [
+                XG_ACCESS_ID   : "2100279792",
+                XG_ACCESS_KEY  : "A71PW5IM54PM",
+        ]
     }
     //执行lint检查，有任何的错误或者警告提示，都会终止构建，我们可以将其关掉。
     lintOptions {
@@ -26,24 +32,24 @@ android {
         }
         release {
             storeFile file("E:/WhereU/WhereU.jks")
-            if (System.console() != null){
+            if (System.console() != null) {
                 storePassword System.console().readLine("\nKeystore password: ")
             }
             keyAlias "news"
-            if (System.console() != null){
+            if (System.console() != null) {
                 keyPassword System.console().readLine("\nKey password: ")
             }
+        }
     }
-}
 
-buildTypes {
-    debug {
-        // 显示Log
-        buildConfigField "boolean", "LOG_DEBUG", "true"
-        versionNameSuffix "-debug"
-        minifyEnabled false
-        zipAlignEnabled false
-        shrinkResources false
+    buildTypes {
+        debug {
+            // 显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            versionNameSuffix "-debug"
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
             signingConfig signingConfigs.debug
         }
         release {
@@ -61,38 +67,39 @@ buildTypes {
             //签名
             signingConfig signingConfigs.release
             applicationVariants.all { variant ->
-                variant.outputs.all{
-                    outputFileName = "app_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
+                variant.outputs.all {
+                    outputFileName = "app_v${defaultConfig.versionName}}.apk"
                 }
             }
         }
     }
-    flavorDimensions "brand"
-    productFlavors {
-        klz {
-            dimension "brand"
-        }
-        sumsang {
-            dimension "brand"
-        }
-        xiaomi {
-            dimension "brand"
-        }
-    }
-    productFlavors.all { flavor ->
-        flavor.manifestPlaceholders = [K_CHANNEL_VALUE: name]
-    }
 }
 
 dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:support-v13:23.4.0'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.jcodecraeer:xrecyclerview:1.3.2'
     compile 'org.lucee:commons-lang:2.6.0'
+    //图片加载框架
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    //阿里json解析框架
     compile 'com.alibaba:fastjson:1.2.21'
+    //网络请求框架
     compile 'org.xutils:xutils:3.3.40'
+    //1 retrofit网络请求框架及json解析
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    //Okhttp框架
+    compile 'com.squareup.okhttp3:okhttp:3.9.1'
+
+    //信鸽jar
+    compile 'com.tencent.xinge:xinge:3.2.2-release'
+    //wup包
+    compile 'com.tencent.wup:wup:1.0.0.E-release'
+    //mid包
+    compile 'com.tencent.mid:mid:4.0.6-release'
 }
 
 // 指导文章
@@ -101,4 +108,3 @@ dependencies {
 
 // 打包--需要配置gradle的环境变量（path=>C:\Users\VULCAN\.gradle\gradle-3.3\bin）,选对应的版本（C:\Users\VULCAN\.gradle\wrapper\dists）复制到前面的.gradle里面，然后重启studio
 // Terminal里面直接输入：gradle assembleRelease
-// 没有看到提交信息呀....

@@ -2,6 +2,7 @@ package com.klz.news;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,8 +22,8 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
-import com.klz.news.adapter.MyAdapter;
-import com.klz.news.model.Joke;
+import com.klz.news.adapter.TextAdapter;
+import com.klz.news.model.TextJoke;
 import com.klz.news.network.HttpUtils;
 import com.klz.news.update.UpdateUtil;
 import com.klz.news.update.appInfo;
@@ -34,22 +35,22 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 
-import static com.klz.news.util.SettingFile.showApiUrl;
+import static com.klz.news.util.SettingFile.showTextApiUrl;
 
 @ContentView(R.layout.activity_main)
-public class MainActivity extends Activity implements MyAdapter.MyItemClickListener, MyAdapter.MyItemLongClickListener {
+public class MainActivity extends Activity implements TextAdapter.MyItemClickListener, TextAdapter.MyItemLongClickListener {
     static String maxNum = "15";
     int num = 1;
-    @ViewInject(R.id.recyclerview)
-    private XRecyclerView mRecyclerview;
+    @ViewInject(R.id.textRecyclerView)
+    private XRecyclerView mRecyclerView;
     @ViewInject(R.id.txt_version)
     private TextView version;
     @ViewInject(R.id.text_empty)
     private TextView mEmptyView;
 
-    private ArrayList<Joke> listData;
-    private ArrayList<Joke> newListData;
-    private MyAdapter myAdapter;
+    private ArrayList<TextJoke> listData;
+    private ArrayList<TextJoke> newListData;
+    private TextAdapter myAdapter;
     private boolean mIsRefreshing;
     private boolean mIsLoading;
 
@@ -64,7 +65,7 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
                     listData.clear();
                     myAdapter.setDatas(newListData);
                     myAdapter.notifyDataSetChanged();
-                    mRecyclerview.refreshComplete();
+                    mRecyclerView.refreshComplete();
                     mIsRefreshing = false;
                     break;
                 case 1:
@@ -73,15 +74,15 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
                     Log.e("DATA", "数据为：" + obj1);
                     myAdapter.setDatas(newListData);
                     myAdapter.notifyDataSetChanged();
-                    mRecyclerview.loadMoreComplete();
+                    mRecyclerView.loadMoreComplete();
                     mIsLoading = false;
                     break;
                 case -1:
                     Toast.makeText(MainActivity.this, "网络访问失败！稍候重试。", Toast.LENGTH_LONG).show();
                     mIsLoading = false;
                     mIsRefreshing = false;
-                    mRecyclerview.loadMoreComplete();
-                    mRecyclerview.refreshComplete();
+                    mRecyclerView.loadMoreComplete();
+                    mRecyclerView.refreshComplete();
                     break;
                 case 9999:
                     //升级操作
@@ -102,6 +103,7 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
+
         initView();
         start();
     }
@@ -118,14 +120,14 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
         update();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerview.setLayoutManager(layoutManager);
+        mRecyclerView.setLayoutManager(layoutManager);
 
-        mRecyclerview.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        mRecyclerview.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
-        mRecyclerview.setArrowImageView(R.drawable.iconfont_downgrey);
-        mRecyclerview.setLoadingMoreEnabled(true);
+        mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallRotate);
+        mRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
+        mRecyclerView.setLoadingMoreEnabled(true);
 
-        mRecyclerview.setOnTouchListener(new View.OnTouchListener() {
+        mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (mIsRefreshing || mIsLoading) {
@@ -136,9 +138,9 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
             }
         });
         View header = LayoutInflater.from(this).inflate(R.layout.recyclerview_header, ((ViewGroup) findViewById(android.R.id.content)), false);
-        mRecyclerview.addHeaderView(header);
+        mRecyclerView.addHeaderView(header);
 
-        mRecyclerview.setLoadingListener(new XRecyclerView.LoadingListener() {
+        mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 mIsRefreshing = true;
@@ -146,7 +148,7 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        String jsonResult = HttpUtils.requestShowApp(showApiUrl, maxNum, "" + num);
+                        String jsonResult = HttpUtils.requestShowApp(showTextApiUrl, maxNum, "" + num);
                         if (!TextUtils.isEmpty(jsonResult)) {
                             Log.d("MainActivity", jsonResult);
                             num++;
@@ -154,7 +156,7 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
                                 JSONObject jsonObject = JSONObject.parseObject(jsonResult);
                                 JSONObject showapi_res_body = jsonObject.getJSONObject("showapi_res_body");
 
-                                newListData = (ArrayList<Joke>) JSONObject.parseArray(showapi_res_body.getJSONArray("contentlist").toString(), Joke.class);
+                                newListData = (ArrayList<TextJoke>) JSONObject.parseArray(showapi_res_body.getJSONArray("contentlist").toString(), TextJoke.class);
                                 Log.e("Data", "数据长度：" + newListData.size());
                                 Log.e("Data", "数据0：" + newListData.get(0).getTitle());
 
@@ -183,14 +185,14 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        String jsonResult = HttpUtils.requestShowApp(showApiUrl, maxNum, "" + num);
+                        String jsonResult = HttpUtils.requestShowApp(showTextApiUrl, maxNum, "" + num);
                         if (!TextUtils.isEmpty(jsonResult)) {
                             num++;
                             try {
                                 JSONObject jsonObject = JSONObject.parseObject(jsonResult);
                                 JSONObject showapi_res_body = jsonObject.getJSONObject("showapi_res_body");
 
-                                newListData = (ArrayList<Joke>) JSONObject.parseArray(showapi_res_body.getJSONArray("contentlist").toString(), Joke.class);
+                                newListData = (ArrayList<TextJoke>) JSONObject.parseArray(showapi_res_body.getJSONArray("contentlist").toString(), TextJoke.class);
                                 Log.e("Data", "数据长度：" + newListData.size());
                                 Log.e("Data", "数据0：" + newListData.get(0).getTitle());
 
@@ -212,25 +214,28 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
             }
         });
 
-        mRecyclerview.setEmptyView(mEmptyView);
+        mRecyclerView.setEmptyView(mEmptyView);
 
         listData = new ArrayList<>();
-        myAdapter = new MyAdapter(MainActivity.this, listData);
-        mRecyclerview.setAdapter(myAdapter);
+        myAdapter = new TextAdapter(MainActivity.this, listData);
+        mRecyclerView.setAdapter(myAdapter);
         myAdapter.setOnItemClickListener(this);
         myAdapter.setOnItemLongClickListener(null);
-        mRecyclerview.refresh();
+        mRecyclerView.refresh();
     }
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+    }
     @Override
     public void onItemClick(View view, int postion) {
-        Joke lau = listData.get(postion - 2);
+        TextJoke lau = listData.get(postion - 2);
         if (lau != null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(lau.getTitle());
             builder.setMessage(lau.getText());
             builder.setIcon(R.mipmap.ic_launcher);
-            builder.setCancelable(false);
+            builder.setCancelable(true);
             builder.setPositiveButton("哈哈", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -249,7 +254,7 @@ public class MainActivity extends Activity implements MyAdapter.MyItemClickListe
 
     @Override
     public void onItemLongClick(View view, int postion) {
-        Joke lau = listData.get(postion);
+        TextJoke lau = listData.get(postion);
         if (lau != null) {
             Toast.makeText(this, lau.getText(), Toast.LENGTH_LONG).show();
         }

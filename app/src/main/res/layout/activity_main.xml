@@ -40,7 +40,7 @@
         android:visibility="gone"/>
 
     <com.jcodecraeer.xrecyclerview.XRecyclerView
-        android:id="@+id/recyclerview"
+        android:id="@+id/textRecyclerView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 
@@ -52,6 +52,5 @@
         android:background="#dcdcdc"
         android:gravity="center"
         android:text="@string/emptyview"/>
-
 
 </RelativeLayout>

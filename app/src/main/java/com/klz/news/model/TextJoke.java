@@ -6,7 +6,7 @@ import com.klz.news.util.clearContentUtil;
  * Created on 2016/9/28.
  */
 
-public class Joke {
+public class TextJoke {
 
     /**
      * id : 5850aee56e368ed797bc1f0c
